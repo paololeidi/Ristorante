@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Ordinabili</title>
+</head>
+
+<body>
+    <h1>Gestione Ordinabili</h1>
+    <form action="" method="post">
+        <input type="radio" id="ins_piatto" name="op" value="ins_piatto">
+        <label for="ins_piatto">Inserisci piatto</label><br><br>
+        <label for="nome_piatto">Nome: </label>
+        <input type="text" id="nome_piatto" name="nome_piatto">
+        <label for="sezione">Sezione: </label>
+        <input type="text" id="sezione" name="sezione">
+        <label for="tempo_prep">Tempo preparazione: </label>
+        <input type="text" id="tempo_prep" name="tempo_prep">
+        <label for="prezzo_piatto">Prezzo: </label>
+        <input type="text" id="prezzo_piatto" name="prezzo_piatto">€
+        <br>
+        <br>
+        <br>
+
+        <input type="radio" id="del_piatto" name="op" value="del_piatto">
+        <label for="del_piatto">Cancella piatto: </label>
+        <input type="text" id="piatto" name="piatto"><br><br><br>
+
+
+        <input type="radio" id="ins_bibita" name="op" value="ins_bibita">
+        <label for="ins_bibita">Inserisci bevanda</label><br><br>
+        <label for="nome_bibita">Nome: </label>
+        <input type="text" id="nome_bibita" name="nome_bibita">
+        <label for="categoria">Categoria: </label>
+        <input type="text" id="categoria" name="categoria">
+        <label for="prezzo_bibita">Prezzo: </label>
+        <input type="text" id="prezzo_bibita" name="prezzo_bibita">€
+        <br>
+        <br>
+        <br>
+
+        <input type="radio" id="del_bibita" name="op" value="del_bibita">
+        <label for="del_bibita">Cancella bevanda: </label>
+        <input type="text" id="bibita" name="bibita"><br><br><br>
+
+
+        <input type="submit" value="Salva">
+    </form>
+    <p>
+        <h2>Piatti</h2>
+        <ul>
+            {% for piatto in piatti %}
+            <li>{{ piatto }}</li>
+            {% endfor %}
+        </ul>
+    </p>
+    <p>
+        <h2>Bevande</h2>
+        <ul>
+            {% for bevanda in bevande %}
+            <li>{{ bevanda }}</li>
+            {% endfor %}
+        </ul>
+    </p>
+</body>
+
+</html>

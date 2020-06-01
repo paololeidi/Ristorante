@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gesione tavoli</title>
+</head>
+<body>
+    <h1>Gestione tavoli</h1>
+     <form action="" method="post">
+
+         <input type="radio" id="insert" name="operation" value="ins">
+         <label for="insert">Inserisci tavolo</label>
+
+         <br><br>
+
+         <label for="number">Numero: </label>
+         <input type="number" id="number" name="number">
+
+         <label for="posti">Posti: </label>
+         <input type="number" id="posti" name="posti">
+
+         <label for="esterno">Esterno </label>
+         <input type="checkbox" id="esterno" name="esterno" value="esterno">
+
+         <br><br><br>
+
+         <input type="radio" id="delete" name="operation" value="del">
+         <label for="delete">Cancella tavolo</label>
+
+         <br><br>
+
+         <label for="numberC">Numero: </label>
+         <input type="number" id="numberC" name="numberC">
+
+         <br><br><br>
+
+         <input type="submit" value="Salva">
+
+    </form>
+    <ul>
+        {% for tav in tavoli %}
+            <li>{{ tav }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Cameriere 1</title>
+</head>
+<body>
+
+    <h1>Gestione camerieri</h1>
+
+    <form action="" method="post">
+        <input type="radio" id="insert" name="operation" value="ins">
+        <label for="insert">Inserisci cameriere</label><br>
+        <input type="radio" id="delete" name="operation" value="del">
+        <label for="delete">Cancella cameriere</label><br><br>
+        <label for="user">User: </label>
+        <input type="text" id="user" name="user">
+        <label for="pwd">Password: </label>
+        <input type="text" id="pwd" name="pwd">
+        <input type="submit" value="Salva">
+    </form>
+    <ul>
+        {% for cam in camerieri %}
+            <li>{{ cam }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

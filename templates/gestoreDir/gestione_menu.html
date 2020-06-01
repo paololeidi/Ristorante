@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Menù</title>
+</head>
+
+<body>
+    <h1>Gestione Menù</h1>
+    <form action = "" method = "POST">
+        <input type="radio" id="insert" name="operation" value="ins"> Inserisci: <br>
+        <ul>
+            <li>Selezionare la data per il menù:
+                <input type = "date" name = "data_menu" id = "data_menu">
+            </li>
+            <br>
+            <li>Descrizione:
+                <br>
+                <br>
+                <textarea rows = "5" cols = "60" name = "menu_desc" id = "menu_desc"></textarea>
+            </li>
+        </ul>
+        <br>
+        <br>
+        <input type="radio" id="delete" name="operation" value="del">
+        Cancella menù:
+        <input type = "date" name = "data_del" id = "data_del">
+        <h2>Lista piatti</h2>
+        <table width = 30%>
+            <tr>
+                <th><b>Seleziona</b></th>
+                <th><b>Piatto</b></th>
+            </tr>
+            {%for i in range(0, len)%}
+            <tr>
+                <td style = "text-align: center;"><input type = "checkbox" id = "{{ i }}"> </td>
+                <td style = "text-align: center;">{{ piatti[i] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <br>
+        <input type = "submit" value="Salva">
+    </form>
+
+    <ul>
+    {% for item in menu %}
+    <li>{{ item }}</li>
+    {% endfor %}
+    </ul>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione prodotti</title>
+</head>
+<body>
+    <form action="" method="post">
+
+         <input type="radio" id="insert" name="operation" value="ins">
+         <label for="insert">Inserisci prodotto</label>
+
+         <br><br>
+
+         <label for="id">ID: </label>
+         <input type="text" id="id" name="id">
+
+         <label for="costo">Costo: </label>
+        <!-- gestire decimali -->
+         <input type="" id="costo" name="costo">
+
+         <label for="data_scadenza">Data scadenza: </label>
+         <input type="date" id="data_scadenza" name="data_scadenza">
+
+         <label for="descr">Descr: </label>
+         <input type="text" id="descr" name="descr">
+
+        <label for="qta">Quantità disponibile: </label>
+        <input type="number" id="qta" name="qta">
+
+        <label for="conserv">Luogo conservazione: </label>
+        <input type="text" id="conserv" name="conserv">
+
+         <br><br><br>
+
+         <input type="radio" id="delete" name="operation" value="del">
+         <label for="delete">Cancella prodotto</label>
+
+         <br><br>
+
+         <label for="IDC">ID: </label>
+         <input type="text" id="IDC" name="IDC">
+
+         <br><br><br>
+
+         <input type="submit" value="Salva">
+
+    </form>
+    <ul>
+        {% for prod in prodotti %}
+            <li>{{ prod }}</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
