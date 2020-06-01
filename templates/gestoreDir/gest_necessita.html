@@ -2,16 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Gestione necessita</title>
+    <title>Gestione piatto_prodotto</title>
 </head>
 <body>
-    <form>
+    <form action="" method="post">
+        <input type="radio" id="insert" name="operation" value="ins">
+        <label for="insert">Inserisci</label>
+
+        <br><br>
+
         <label for="nomePiatto">Nome piatto: </label>
         <input type="text" id="nomePiatto" name="nomePiatto">
+
         <label for="idProdotto">ID prodotto: </label>
         <input type="text" id="idProdotto" name="idProdotto">
+
         <label for="qta">Quantità: </label>
         <input type="number" id="qta" name="qta">
+
+        <br><br><br>
+
+        <input type="radio" id="delete" name="operation" value="del">
+        <label for="delete">Rimuovi</label>
+
+        <br><br>
+
+        <label for="nomePiattoC">Nome piatto: </label>
+        <input type="text" id="nomePiattoC" name="nomePiattoC">
+
+        <label for="idProdottoC">ID prodotto: </label>
+        <input type="text" id="idProdottoC" name="idProdottoC">
+
+        <br><br><br>
+
         <input type="submit" value="Salva">
     </form>
 

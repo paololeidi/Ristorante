@@ -132,15 +132,19 @@ def reset():
     # connection.execute('DROP TABLE IF EXISTS cameriere;')
     connection.execute('CREATE TABLE cameriere (userid VARCHAR NOT NULL PRIMARY KEY, password VARCHAR);')
     connection.execute(
-        'CREATE TABLE piatto (nome VARCHAR NOT NULL PRIMARY KEY,  sezione VARCHAR, tempo_preparazione FLOAT, prezzo FLOAT);')
+        'CREATE TABLE piatto (nome VARCHAR NOT NULL PRIMARY KEY,  sezione VARCHAR, tempo_preparazione FLOAT, '
+        'prezzo FLOAT);')
     connection.execute('CREATE TABLE menu_giornaliero (data DATE NOT NULL PRIMARY KEY, descrizione VARCHAR);')
     connection.execute('CREATE TABLE bevanda (nome VARCHAR NOT NULL PRIMARY KEY, categoria VARCHAR, prezzo FLOAT);')
     connection.execute(
-        'CREATE TABLE proposte (dataMenu DATE NOT NULL REFERENCES menu_giornaliero(data), nomePiatto VARCHAR NOT NULL REFERENCES piatto(nome), PRIMARY KEY(dataMenu, nomePiatto));')
+        'CREATE TABLE proposte (dataMenu DATE NOT NULL REFERENCES menu_giornaliero(data), nomePiatto VARCHAR NOT NULL '
+        'REFERENCES piatto(nome), PRIMARY KEY(dataMenu, nomePiatto));')
     # connection.execute('CREATE TABLE cameriere (userid VARCHAR PRIMARY KEY, password VARCHAR);')
     connection.execute('CREATE TABLE tavolo (numero INTEGER PRIMARY KEY, posti INTEGER NOT NULL, esterno BOOLEAN);')
-    connection.execute('CREATE TABLE prodotto (id VARCHAR PRIMARY KEY, costo FLOAT, data_scad DATE, descr VARCHAR, qta_disp INTEGER, conserv VARCHAR);')
-    connection.execute('CREATE TABLE piatto_prodotto (nomePiatto VARCHAR REFERENCES piatto(nome), idProdotto VARCHAR REFERENCES prodotto(id), qta INTEGER, PRIMARY KEY (nomePiatto, idProdotto));')
+    connection.execute('CREATE TABLE prodotto (id VARCHAR PRIMARY KEY, costo FLOAT, data_scad DATE, descr VARCHAR, '
+                       'qta_disp INTEGER, conserv VARCHAR);')
+    connection.execute('CREATE TABLE piatto_prodotto (nomePiatto VARCHAR REFERENCES piatto(nome) ON DELETE CASCADE, idProdotto VARCHAR '
+                       'REFERENCES prodotto(id) ON DELETE CASCADE, qta INTEGER, PRIMARY KEY (nomePiatto, idProdotto));')
 
     connection.commit()
     connection.close()
@@ -194,13 +198,14 @@ def gestione_tavoli():
     rows = cursor.fetchall()
     connection.close()
 
-    return render_template('gestoreDir/gestione_tavoli.html', tavoli = rows)
+    return render_template('gestoreDir/gestione_tavoli.html', tavoli=rows)
 
 
 @app.route('/gestoreDir/gestione_prodotti', methods=['GET', 'POST'])
 def gestione_prodotti():
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
+    connection.execute('PRAGMA foreign_keys = 1;')
 
     operation = request.form.get('operation')
 
@@ -232,25 +237,37 @@ def gestione_prodotti():
 def gest_nec():
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
+    operation = request.form.get('operation')
 
-    nomePiatto = request.form.get('nomePiatto')
-    idProdotto = request.form.get('idProdotto')
-    qta = request.form.get('qta')
+    if operation == 'ins':
+        nomePiatto = request.form.get('nomePiatto')
+        idProdotto = request.form.get('idProdotto')
+        qta = request.form.get('qta')
 
-    cursor.execute('SELECT nome FROM piatto WHERE nome =?', [nomePiatto])
-    nomeEstr = cursor.fetchone()
+        cursor.execute('SELECT nome FROM piatto WHERE nome =?', [nomePiatto])
+        nomeEstr = cursor.fetchone()
 
-    cursor.execute('SELECT id FROM prodotto WHERE id = ?', [idProdotto])
-    idEstr = cursor.fetchone()
+        cursor.execute('SELECT id FROM prodotto WHERE id = ?', [idProdotto])
+        idEstr = cursor.fetchone()
 
-    cursor.execute('INSERT INTO piatto_prodotto VALUES (?,?,?)', [nomePiatto, idProdotto, qta])
-    connection.commit()
+        if nomeEstr!=None and idEstr!=None:
+            cursor.execute('INSERT INTO piatto_prodotto VALUES (?,?,?)', [nomeEstr[0], idEstr[0], qta])
+        connection.commit()
+
+    if operation == 'del':
+        nomePiatto = request.form.get('nomePiattoC')
+        idProdotto = request.form.get('idProdottoC')
+        connection.execute("DELETE FROM piatto_prodotto WHERE nomePiatto =? AND idProdotto =?", [nomePiatto, idProdotto])
+        connection.commit()
+
 
     cursor.execute('SELECT * FROM piatto_prodotto')
     rows = cursor.fetchall()
     connection.close()
 
     return render_template('/gestoreDir/gest_necessita.html', rows=rows)
+
+
 
 
 app.run(host="127.0.0.1", port=5000, debug=True)
