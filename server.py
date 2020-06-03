@@ -33,6 +33,7 @@ def gestore_login():
 def ordinabili():
     operation = request.form.get('op', '')
     connection = sqlite3.connect(db)
+    connection.execute('PRAGMA foreign_keys = 1;')
     cursor = connection.cursor()
 
     if operation == 'ins_piatto':
@@ -129,6 +130,7 @@ def reset():
     connection.execute('DROP TABLE IF EXISTS tavolo;')
     connection.execute('DROP TABLE IF EXISTS prodotto')
     connection.execute('DROP TABLE IF EXISTS piatto_prodotto')
+    connection.execute('DROP TABLE IF EXISTS piatto_bevanda')
     # connection.execute('DROP TABLE IF EXISTS cameriere;')
     connection.execute('CREATE TABLE cameriere (userid VARCHAR NOT NULL PRIMARY KEY, password VARCHAR);')
     connection.execute(
@@ -145,6 +147,9 @@ def reset():
                        'qta_disp INTEGER, conserv VARCHAR);')
     connection.execute('CREATE TABLE piatto_prodotto (nomePiatto VARCHAR REFERENCES piatto(nome) ON DELETE CASCADE, idProdotto VARCHAR '
                        'REFERENCES prodotto(id) ON DELETE CASCADE, qta INTEGER, PRIMARY KEY (nomePiatto, idProdotto));')
+    connection.execute(
+        'CREATE TABLE piatto_bevanda (nomeBevanda VARCHAR REFERENCES bevanda(nome) ON DELETE CASCADE, idProdotto VARCHAR '
+        'REFERENCES prodotto(id) ON DELETE CASCADE, qta INTEGER, PRIMARY KEY (nomeBevanda, idProdotto));')
 
     connection.commit()
     connection.close()
@@ -209,7 +214,6 @@ def gestione_prodotti():
 
     operation = request.form.get('operation')
 
-
     if operation == 'ins':
         id = request.form.get('id')
         costo = request.form.get('costo')
@@ -237,6 +241,7 @@ def gestione_prodotti():
 def gest_nec():
     connection = sqlite3.connect(db)
     cursor = connection.cursor()
+    connection.execute('PRAGMA foreign_keys = 1;')
     operation = request.form.get('operation')
 
     if operation == 'ins':
@@ -260,14 +265,39 @@ def gest_nec():
         connection.execute("DELETE FROM piatto_prodotto WHERE nomePiatto =? AND idProdotto =?", [nomePiatto, idProdotto])
         connection.commit()
 
+    # todo sistemare perchè non va
+    if operation == 'insB':
+        nomeBevanda = request.form.get('nomeBevanda')
+        idProdotto = request.form.get('idProdottoB')
+        qta = request.form.get('qtaB')
+
+        cursor.execute('SELECT nome FROM bevanda WHERE nome =?', [nomeBevanda])
+        nomeEstr = cursor.fetchone()
+
+        cursor.execute('SELECT id FROM prodotto WHERE id = ?', [idProdotto])
+        idEstr = cursor.fetchone()
+
+        if nomeEstr!=None and idEstr!=None:
+            # todo cambiare piatto-prodotto
+            cursor.execute('INSERT INTO piatto_bevanda VALUES (?,?,?)', [nomeEstr[0], idEstr[0], qta])
+        connection.commit()
+
+    # TODO
+    if operation == 'delB':
+        nomeBevanda = request.form.get('nomeBevandaC')
+        idProdotto = request.form.get('idProdottoCB')
+        connection.execute("DELETE FROM piatto_bevanda WHERE nomeBevanda =? AND idProdotto =?", [nomeBevanda, idProdotto])
+        connection.commit()
 
     cursor.execute('SELECT * FROM piatto_prodotto')
-    rows = cursor.fetchall()
+    piatti = cursor.fetchall()
+
+    cursor.execute('SELECT * FROM piatto_bevanda')
+    bevande = cursor.fetchall()
+
     connection.close()
 
-    return render_template('/gestoreDir/gest_necessita.html', rows=rows)
-
-
+    return render_template('/gestoreDir/gest_necessita.html', piatti=piatti, bevande=bevande)
 
 
 app.run(host="127.0.0.1", port=5000, debug=True)

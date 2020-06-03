@@ -6,6 +6,7 @@
 </head>
 <body>
     <form action="" method="post">
+        <h3>Per piatto</h3>
         <input type="radio" id="insert" name="operation" value="ins">
         <label for="insert">Inserisci</label>
 
@@ -33,14 +34,48 @@
         <label for="idProdottoC">ID prodotto: </label>
         <input type="text" id="idProdottoC" name="idProdottoC">
 
+        <br><br>
+
+        <h3>Per bevanda</h3>
+
+        <input type="radio" id="insertB" name="operation" value="insB">
+        <label for="insertB">Inserisci</label>
+
+        <br><br>
+
+        <label for="nomeBevanda">Nome bevanda: </label>
+        <input type="text" id="nomeBevanda" name="nomeBevanda">
+
+        <label for="idProdottoB">ID prodotto: </label>
+        <input type="text" id="idProdottoB" name="idProdottoB">
+
+        <label for="qtaB">Quantità: </label>
+        <input type="number" id="qtaB" name="qtaB">
+
         <br><br><br>
+
+        <input type="radio" id="deleteB" name="operation" value="delB">
+        <label for="deleteB">Rimuovi</label>
+
+        <br><br>
+
+        <label for="nomeBevandaC">Nome bevanda: </label>
+        <input type="text" id="nomeBevandaC" name="nomeBevandaC">
+
+        <label for="idProdottoCB">ID prodotto: </label>
+        <input type="text" id="idProdottoCB" name="idProdottoCB">
 
         <input type="submit" value="Salva">
     </form>
 
     <ul>
-        {% for row in rows %}
-            <li>{{ row }}</li>
+        {% for piatto in piatti %}
+            <li>{{ piatto }}</li>
+        {% endfor %}
+    </ul>
+    <ul>
+        {% for bevanda in bevande %}
+            <li>{{ bevanda }}</li>
         {% endfor %}
     </ul>
 </body>
